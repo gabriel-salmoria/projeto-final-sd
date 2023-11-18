@@ -19,8 +19,8 @@ architecture circuito of testbench_add is
 		);
 	END component;
 	
-	signal A   : std_logic_vector(63 DOWNTO 0); --:= "0000000000000000000000000000000000000000000000000000000000000000";
-	signal B   : std_logic_vector(63 DOWNTO 0); --:= "0000000000000000000000000000000000000000000000000000000000000000";
+	signal A   : std_logic_vector(63 DOWNTO 0);
+	signal B   : std_logic_vector(63 DOWNTO 0);
 	signal sum : std_logic_vector(63 DOWNTO 0);
 		
 	CONSTANT wait_time : TIME := 10 ns;
@@ -45,6 +45,7 @@ architecture circuito of testbench_add is
 
 			BEGIN			
 				while not endfile(goldenmodel) loop
+					readline(goldenmodel, curr_line);
 					read(curr_line, A_value);
 					read(curr_line, space);
 					read(curr_line, B_value);
