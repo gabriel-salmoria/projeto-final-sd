@@ -4,56 +4,67 @@ import pathlib
 PWD = pathlib.Path(__file__).parent.absolute()
 ROOT = PWD.parent.absolute()
 
+
 def generate_golden_model_add():
     """
     Gera os estímulos para o módulo add.
-    
-    São 50 blocos de estímulos, cada um consistindo de uma linha com 2 números 
-    binários de 64 bits cada separados por espaço, e uma linha com o resultado 
+
+    São 50 blocos de estímulos, cada um consistindo de uma linha com 2 números
+    binários de 64 bits cada separados por espaço, e uma linha com o resultado
     da soma dos dois, também em binário de 64 bits.
     """
-    path = ROOT / 'estimulos-add.dat'
-    with path.open('w') as file:
+    path = ROOT / "estimulos-add.dat"
+    with path.open("w") as file:
         for _ in range(50):  # 50 blocos de estímulos
             a = random.randint(0, 2**64 - 1)
             b = random.randint(0, 2**64 - 1)
             c = f"{a+b:064b}"[-64:]
             file.write(f"{a:064b} {b:064b}\n")
             file.write(f"{c}\n")
-    print('Geração do arquivo de estímulos para o módulo add concluída.')
+    print("Geração do arquivo de estímulos para o módulo add concluída.")
+
 
 def generate_golden_model_sub():
-    path = ROOT / 'estimulos-sub.dat'
-    with path.open('w') as file:
+    path = ROOT / "estimulos-sub.dat"
+    with path.open("w") as file:
         ...
-    print('Geração do arquivo de estímulos para o módulo sub concluída.')
+    print("Geração do arquivo de estímulos para o módulo sub concluída.")
+
 
 def generate_golden_model_mul():
-    path = ROOT / 'estimulos-mul.dat'
-    with path.open('w') as file:
-        ...
-    print('Geração do arquivo de estímulos para o módulo mul concluída.')
+    path = ROOT / "estimulos-mul.dat"
+    with path.open("w") as file:
+        for _ in range(50):  # 50 blocos de estímulos
+            a = random.randint(0, 2**32 - 1)
+            b = random.randint(0, 2**32 - 1)
+            file.write(f"{a:032b} {b:032b}\n")
+            file.write(f"{a*b:064b}\n")
+    print("Geração do arquivo de estímulos para o módulo mul concluída.")
 
-if __name__ == '__main__':
+
+def print_help_and_exit():
+    print("Usage: python3 golden-model.py <module-name>")
+    print("Valid module names: add, sub, mul")
+    sys.exit(1)
+
+
+if __name__ == "__main__":
     import sys
 
     # Read the input
     if len(sys.argv) != 2:
-        print('Usage: python3 golden-model.py <module-name>')
-        print('module names: add, sub, mul')
-        sys.exit(1)
-    
+        print_help_and_exit()
+
     # Check the input
     module_name = sys.argv[1]
 
     # Generate the golden model for the selected module
-    if module_name == 'add':
+    if module_name == "add":
         generate_golden_model_add()
-    elif module_name == 'sub':
+    elif module_name == "sub":
         generate_golden_model_sub()
-    elif module_name == 'mul':
+    elif module_name == "mul":
         generate_golden_model_mul()
     else:
-        print('Invalid module name:', module_name)
-        print('module names: add, sub, mul')
-        sys.exit(1)
+        print(f"Invalid module name: {module_name}")
+        print_help_and_exit()
