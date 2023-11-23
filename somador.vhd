@@ -5,7 +5,7 @@ USE ieee.numeric_std.ALL;
 ENTITY somador IS
 	GENERIC (
 		N : INTEGER := 64
-	);
+	);	
 	PORT (
 		A   : IN std_logic_vector(N - 1 DOWNTO 0);
 		B   : IN std_logic_vector(N - 1 DOWNTO 0);
