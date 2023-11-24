@@ -18,22 +18,17 @@ signal C : std_logic_vector(x downto 0);
 
 begin
 
-C <=  '0' & (A xor B);
+C(0) <= OP;
 
-first : entity work.full_adder(bhv)
-	port map(
-				X 		=> A(0),
-				Y 		=> B(0),
-				Cin 	=> OP,
-				sum 	=> SUM(0),
-				Cout 	=> C(1));
+subtraction: for i in 0 to x-1 generate
+	sB(i) <= B(i) xor OP;
+end generate subtraction;
 
-gen : for i in 1 to X generate begin
-
+gen : for i in 0 to x-1 generate begin
 	a1 : entity work.full_adder(bhv)
 		port map(
 				X 		=> A(i),
-				Y 		=> B(i),
+				Y 		=> sB(i),
 				Cin 	=> C(i),
 				sum 	=> SUM(i),
 				Cout 	=> C(i+1)
