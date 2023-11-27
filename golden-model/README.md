@@ -4,17 +4,16 @@
 
 Para usar o golden model, basta rodar
 
-python3 path/to/golden-model/golden-model.py < module-name >
+```bash
+python3 path/to/golden-model/golden-model.py <option>
+```
 
-São aceitos como entrada os seguintes módulos:
-
-- add
-- sub
-- mul
+Onde `<option>` é o nome do módulo que se deseja gerar o golden model; ou "all"
+para gerar todos os módulos; ou "clean" para limpar os arquivos gerados.
 
 ## Testes
 
 O golden model gerará um arquivo de testes para cada módulo, com o nome
-estimulos-< module-name >.dat
-Para rodar os testes, o usuário deve settar como toplevel o módulo desejado e
+estimulos-< option >.dat
+Para rodar os testes, o usuário deve adicionar como toplevel o módulo desejado e
 selecionar o testbench correspondente ao módulo.
