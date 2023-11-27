@@ -24,6 +24,7 @@ sub : entity work.addsub(arch)
 				SUM 	=> temp
 				);
 				
-RESULT <= temp(x-1);
+with a(x-1) select result <= temp(x-1) when '0',
+								 not(temp(x-1)) when '1';
 
 end arch;
