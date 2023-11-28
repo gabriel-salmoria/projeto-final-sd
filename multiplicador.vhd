@@ -1,21 +1,25 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use IEEE.std_logic_unsigned.all;
 
 ENTITY multiplicador IS
 	PORT (
 		A: IN std_logic_vector(31 DOWNTO 0);
 		B: IN std_logic_vector(31 DOWNTO 0);
-		saida : OUT std_logic_vector(63 downto 0));
+		saida : OUT std_logic_vector(64 downto 0));
 
 end multiplicador;
 
 architecture circuito of multiplicador is
 
-signal zero, quarta_soma1, quarta_soma2, resultado_final: std_logic_vector(63 downto 0);
+signal zero, quarta_soma1, quarta_soma2, resultado: std_logic_vector(63 downto 0);
 signal saida_mux: std_logic_vector(2047 downto 0);
 signal soma0: std_logic_vector(1023 downto 0);
 signal soma1: std_logic_vector(511 downto 0);
 signal soma2: std_logic_vector(255 downto 0);
+signal notA, notB, saida_muxA, saida_muxB: std_logic_vector(31 downto 0);
+signal resultado_final_positivo, resultado_final_negativo, resultado_final: std_logic_vector(64 downto 0);
+signal sinal: std_logic;
 
 component somador IS
 GENERIC (
@@ -36,18 +40,38 @@ component mux_2x1 IS
 		saida : OUT std_logic_vector(N - 1 DOWNTO 0));
 
 end component;
+
+component mux_2x1_1bit IS
+	PORT (
+		E0 : IN std_logic;
+		E1 : IN std_logic;
+		sel : IN std_logic;
+		saida : OUT std_logic);
+
+end component;
+
 begin
    zero <= (others => '0');
-	
-	mux: for i in 0 to 31 generate begin
+	notA <= not(A) + "00000000000000000000000000000001";
+	notB <= not(B) + "00000000000000000000000000000001";
+	sinal <= A(31) xor B(31);
+
+	multiplexadorB: mux_2x1 generic map(32) port map(B, notB, B(31), saida_muxB);	
+ 
+   muxA: for m in 0 to 31 generate begin
+		multiplexadorA: mux_2x1_1bit port map (A(m), notA(m), A(31), saida_muxA(m));
+	end generate muxA;
+
+ 
+	  muxsoma: for i in 0 to 31 generate begin
 		multiplexador: mux_2x1 generic map(64) port map(zero, 
 		
-		(i=>B(0), i+1=>B(1), i+2=>B(2), i+3=>B(3), i+4=>B(4), i+5=>B(5), i+6=>B(6), i+7=>B(7), i+8=>B(8), i+9=>B(9), i+10=>B(10),
-		i+11=>B(11), i+12=>B(12), i+13=>B(13), i+14=>B(14), i+15=>B(15), i+16=>B(16), i+17=>B(17), i+18=>B(18), i+19=>B(19), i+20=>B(20),
-		i+21=>B(21), i+22=>B(22), i+23=>B(23), i+24=>B(24), i+25=>B(25), i+26=>B(26), i+27=>B(27), i+28=>B(28), i+29=>B(29), i+30=>B(30), i+31=>B(31),
+		(i=>saida_muxB(0), i+1=>saida_muxB(1), i+2=>saida_muxB(2), i+3=>saida_muxB(3), i+4=>saida_muxB(4), i+5=>saida_muxB(5), i+6=>saida_muxB(6), i+7=>saida_muxB(7), i+8=>saida_muxB(8), i+9=>saida_muxB(9), i+10=>saida_muxB(10),
+		i+11=>saida_muxB(11), i+12=>saida_muxB(12), i+13=>saida_muxB(13), i+14=>saida_muxB(14), i+15=>saida_muxB(15), i+16=>saida_muxB(16), i+17=>saida_muxB(17), i+18=>saida_muxB(18), i+19=>saida_muxB(19), i+20=>saida_muxB(20),
+		i+21=>saida_muxB(21), i+22=>saida_muxB(22), i+23=>saida_muxB(23), i+24=>saida_muxB(24), i+25=>saida_muxB(25), i+26=>saida_muxB(26), i+27=>saida_muxB(27), i+28=>saida_muxB(28), i+29=>saida_muxB(29), i+30=>saida_muxB(30), i+31=>saida_muxB(31),
 		others =>'0')
-		,A(i),saida_mux(63+(i*64) downto (i*64)));
-	end generate mux;
+		,saida_muxA(i),saida_mux(63+(i*64) downto (i*64)));
+	end generate muxsoma;
 	
 	primeira_soma: for j in 0 to 15 generate begin
 		prisomador: somador generic map(64)port map(saida_mux(63+(128*j) downto (128*j)), saida_mux(127+(128*j) downto 64+(128*j)), soma0(63+(64*j) downto 64*j));
@@ -63,7 +87,12 @@ begin
 	
 	quasomador1: somador generic map(64) port map(soma2(63 downto 0), soma2(127 downto 64), quarta_soma1);
 	quasomador2: somador generic map(64) port map(soma2(191 downto 128), soma2(255 downto 192), quarta_soma2);
-	quisomador: somador generic map(64) port map(quarta_soma1, quarta_soma2, resultado_final);
+	quisomador: somador generic map(64) port map(quarta_soma1, quarta_soma2, resultado);
+	
+	resultado_final_positivo <= '0' & resultado;
+	resultado_final_negativo <= not(resultado_final_positivo) + "00000000000000000000000000000000000000000000000000000000000000001";
+	
+	muxsaida: mux_2x1 generic map(65) port map(resultado_final_positivo, resultado_final_negativo, sinal, resultado_final);
 	
 	saida <= resultado_final;
 	
