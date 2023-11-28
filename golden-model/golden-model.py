@@ -71,7 +71,7 @@ def generate_golden_model_mul():
             bin_a = integer_to_twos_complement(a, n)
             bin_b = integer_to_twos_complement(b, n)
 
-            bin_c = integer_to_twos_complement(a * b, 2 * n)
+            bin_c = integer_to_twos_complement(a * b, 2 * n + 1)
 
             file.write(f"{bin_a} {bin_b}\n")
             file.write(f"{bin_c}\n")

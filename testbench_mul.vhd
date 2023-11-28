@@ -12,13 +12,13 @@ architecture circuito of testbench_mul is
 		PORT (
 			A     : IN std_logic_vector(31 DOWNTO 0);
 			B     : IN std_logic_vector(31 DOWNTO 0);
-			saida : OUT std_logic_vector(63 downto 0)
+			saida : OUT std_logic_vector(64 downto 0)
 		);
 	END component;
 	
 	SIGNAL A     : std_logic_vector(31 DOWNTO 0);
 	SIGNAL B     : std_logic_vector(31 DOWNTO 0);
-	SIGNAL saida : std_logic_vector(63 DOWNTO 0);
+	SIGNAL saida : std_logic_vector(64 DOWNTO 0);
 		
 	CONSTANT wait_time : TIME := 10 ns;
 	BEGIN
@@ -35,7 +35,7 @@ architecture circuito of testbench_mul is
 			variable space     : character;
 			variable A_value   : bit_vector(31 DOWNTO 0);
 			variable B_value   : bit_vector(31 DOWNTO 0);
-			variable result    : bit_vector(63 DOWNTO 0);
+			variable result    : bit_vector(64 DOWNTO 0);
 
 			BEGIN			
 				WHILE not endfile(goldenmodel) LOOP
@@ -44,7 +44,7 @@ architecture circuito of testbench_mul is
 					read(curr_line, A_value);
 					read(curr_line, space);
 					read(curr_line, B_value);
-					-- second line: A * B (64 bits)
+					-- second line: A * B (65 bits)
 					readline(goldenmodel, curr_line);
 					read(curr_line, result);
 					
