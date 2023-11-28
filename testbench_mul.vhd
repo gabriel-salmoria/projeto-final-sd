@@ -30,7 +30,7 @@ architecture circuito of testbench_mul is
 			);
 				
 		stim: PROCESS IS
-			file goldenmodel   : text OPEN read_mode IS "/home/joao/projeto-final-sd/estimulos-mul.dat";
+			file goldenmodel   : text OPEN read_mode IS "estimulos-mul.dat";
 			variable curr_line : line;
 			variable space     : character;
 			variable A_value   : bit_vector(31 DOWNTO 0);

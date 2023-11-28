@@ -161,9 +161,9 @@ def clean():
         path.unlink()
 
 
-def print_help_and_exit(modules: list[str]):
+def print_help_and_exit(options: list[str]):
     print("Usage: python3 golden-model.py <option>")
-    print("Valid options:", ", ".join(modules))
+    print("Valid options:", ", ".join(options))
     sys.exit(1)
 
 

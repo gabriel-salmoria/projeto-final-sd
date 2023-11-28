@@ -41,7 +41,7 @@ architecture circuito of testbench_and_or is
 			);
 		
 		stim: PROCESS IS
-			file goldenmodel      : text OPEN read_mode IS "/home/joao/projeto-final-sd/estimulos-and_or.dat";
+			file goldenmodel      : text OPEN read_mode IS "estimulos-and_or.dat";
 			variable curr_line    : line;
 			variable space        : character;
 			variable A_value      : bit_vector(N-1 DOWNTO 0);
