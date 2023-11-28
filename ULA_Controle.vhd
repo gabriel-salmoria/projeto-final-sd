@@ -16,33 +16,41 @@ end entity ULA_Controle;
 
 architecture Behavioral of ULA_Controle is
 
-    signal registradorA, registradorB, registradorC : STD_LOGIC_VECTOR(31 downto 0);
+    signal registradorA, registradorB, registradorC: STD_LOGIC_VECTOR(31 downto 0);
+    signal regSoma, regSub, regAnd, regOr, regSLT: std_logic_vector (31 downto 0);
   
     component and_or
-	    generic(x : integer := 32);
+        generic(x : integer := 32);
         port(A, B : in std_logic_vector(x-1 downto 0);
-		  OP : in std_logic;
-		  RESULT : out std_logic_vector(x-1 downto 0)
-			);
+          OP : in std_logic;
+          RESULT : out std_logic_vector(x-1 downto 0)
+            );
     end component;
 
     component addsub
-	    generic(x : integer := 32);
-	    port(A, B : in std_logic_vector(x-1 downto 0);
-		  OP : in std_logic;
-		  SUM : out std_logic_vector(x-1 downto 0)
-			);
-	end component;
-	
-	component slt
-	    generic(x : integer := 32);
-	    port(A, B : in std_logic_vector(x-1 downto 0);
-		    RESULT : out std_logic
-			    );
-	end component;
-	
+        generic(x : integer := 32);
+        port(A, B : in std_logic_vector(x-1 downto 0);
+          OP : in std_logic;
+          SUM : out std_logic_vector(x-1 downto 0)
+            );
+    end component;
+    
+    component slt
+        generic(x : integer := 32);
+        port(A, B : in std_logic_vector(x-1 downto 0);
+            RESULT : out std_logic
+                );
+    end component;
+    
 begin
 
+    Soma: addsub generic map(32) port map (A => registradorA, B => registradorB, OP => '0', SUM => regsoma); -- 0 para adição
+    Subtracao: addsub generic map(32) port map (A => registradorA, B => registradorB, OP => '1', SUM => regsub); -- 1 para sub
+    AndLogic: and_or port map (A => registradorA, B => registradorB, OP => '0', RESULT => regand); -- 0 para and
+    OrLogic: and_or port map (A => registradorA, B => registradorB, OP => '1', RESULT => regor); -- 1 para or
+    SLTLogic: slt port map (A => registradorA, B => registradorB, RESULT => regslt(0)  -- Verifico apenas olhando o bit menos significativo
+    );
+    
   process (clock, reset)
   begin
     if reset = '1' then
@@ -51,82 +59,55 @@ begin
       registradorB <= "00000000000000000000000000000000";
       registradorC <= "00000000000000000000000000000000";
       
+      
     elsif rising_edge(clock) then
       -- Atualizar registradores com dados dos registradores de entrada quando enable = 1
       
       if enRegA = '1' then
-        registradorA <= dataA;
+        dataA <= registradorA;
       end if;
 
       if enRegB = '1' then
-        registradorB <= dataB;
+        dataB <= registradorB;
       end if;
 
       if enRegC = '1' then
-        registradorC <= dataC;
+        dataC <= registradorC;
       end if;
       
     end if;
   end process;
 
-  process (ULAop, funct, registradorA, registradorB)
+  process (ULAop, funct)
   begin
 
     -- Lógica de funcionamento da ULA de acordo com as entradas aqui:
     
-    case ULAop is
+      case ULAop is
     
       when "00" =>
       
-      Soma: addsub
-        generic map(x => 32)
-        port map(A   => registradorA,
-               B   => registradorB,
-               OP  => '0',  -- '0' para adição
-               SUM => dataC);
+        dataC <= regsoma;  
        
       when "01" =>
+      
         -- Operação de subtração
-        Subtracao: addsub
-            generic map(x => 32)
-            port map (
-            A   => registradorA,
-            B   => registradorB,
-            OP  => '1',  -- '1' para subtração
-            SUM => dataC);
+        dataC <= regsub;
         
       when "10" =>
         -- A partir de agora dependeremos do funct para saber a operação
         case funct is
           when "100100" =>
             -- Operação and
-            AndLogic: and_or
-                generic map(x => 32)
-                port map (
-                A      => registradorA,
-                B      => registradorB,
-                OP     => '0',  -- '0' para AND
-                RESULT => dataC);
+            dataC <= regand;
             
           when "100101" =>
             -- Operação OR
-            OrLogic: and_or
-                generic map(x => 32)
-                port map (
-                A      => registradorA,
-                B      => registradorB,
-                OP     => '1',  -- '1' para OR
-                RESULT => dataC);
+            dataC <= regOR;
             
           when "101010" =>
             -- Operação SLT
-            SLTLogic: slt
-                generic map(x => 32)
-                port map (
-                A      => registradorA,
-                B      => registradorB,
-                RESULT => dataC(0)  -- Verifico apenas olhando o bit menos significativo
-              );
+            dataC(0) <= regSLT(0);
               
           when others =>
             dataC <= (others => '0');
@@ -137,4 +118,4 @@ begin
     end case;
   end process;
 
-end architecture Behavioral;
+end Behavioral;
