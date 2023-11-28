@@ -72,23 +72,6 @@ set_global_assignment -name EDA_ENABLE_GLITCH_FILTERING ON -section_id eda_simul
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name VHDL_FILE ULA_BO.vhd
-set_global_assignment -name VHDL_FILE mux_2x1_1bit.vhd
-set_global_assignment -name VHDL_FILE ULA_Controle.vhd
-set_global_assignment -name VHDL_FILE somador.vhd
-set_global_assignment -name VHDL_FILE addsub.vhd
-set_global_assignment -name VHDL_FILE and_or.vhd
-set_global_assignment -name VHDL_FILE full_adder.vhd
-set_global_assignment -name VHDL_FILE multiplicador.vhd
-set_global_assignment -name VHDL_FILE mux_2x1.vhd
-set_global_assignment -name VHDL_FILE testbench_addsub.vhd
-set_global_assignment -name VHDL_FILE testbench_mul.vhd
-set_global_assignment -name VHDL_FILE testbench_slt.vhd
-set_global_assignment -name VHDL_FILE testbench_and_or.vhd
-set_global_assignment -name SOURCE_FILE "estimulos-slt.dat"
-set_global_assignment -name LICENSE_FILE "estimulos-mul.dat"
-set_global_assignment -name LICENSE_FILE "estimulos-and_or.dat"
-set_global_assignment -name LICENSE_FILE "estimulos-addsub.dat"
 set_global_assignment -name EDA_TEST_BENCH_FILE testbench_mul.vhd -section_id testbench_mul
 set_global_assignment -name EDA_TEST_BENCH_FILE "estimulos-mul.dat" -section_id testbench_mul
 set_global_assignment -name EDA_TEST_BENCH_FILE testbench_addsub.vhd -section_id testbench_addsub
@@ -98,3 +81,21 @@ set_global_assignment -name EDA_TEST_BENCH_FILE "estimulos-slt.dat" -section_id 
 set_global_assignment -name EDA_TEST_BENCH_FILE testbench_and_or.vhd -section_id testbench_and_or
 set_global_assignment -name EDA_TEST_BENCH_FILE "estimulos-and_or.dat" -section_id testbench_and_or
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name VHDL_FILE ULA_BO.vhd
+set_global_assignment -name VHDL_FILE ULA_Controle.vhd
+set_global_assignment -name VHDL_FILE mux_2x1_1bit.vhd
+set_global_assignment -name VHDL_FILE mux_2x1.vhd
+set_global_assignment -name VHDL_FILE full_adder.vhd
+set_global_assignment -name VHDL_FILE somador.vhd
+set_global_assignment -name VHDL_FILE addsub.vhd
+set_global_assignment -name VHDL_FILE and_or.vhd
+set_global_assignment -name VHDL_FILE slt.vhd
+set_global_assignment -name VHDL_FILE multiplicador.vhd
+set_global_assignment -name VHDL_FILE testbench_addsub.vhd
+set_global_assignment -name VHDL_FILE testbench_mul.vhd
+set_global_assignment -name VHDL_FILE testbench_slt.vhd
+set_global_assignment -name VHDL_FILE testbench_and_or.vhd
+set_global_assignment -name SOURCE_FILE "estimulos-slt.dat"
+set_global_assignment -name LICENSE_FILE "estimulos-mul.dat"
+set_global_assignment -name LICENSE_FILE "estimulos-and_or.dat"
+set_global_assignment -name LICENSE_FILE "estimulos-addsub.dat"
