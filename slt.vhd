@@ -26,9 +26,9 @@ sub : entity work.addsub(arch)
 
 ends <= a(x-1) & b(x-1);
 
-with ends select result <= temp(x-1) when '00',
-						        '0' when '01',
-								'1' when '10',
-						not(temp(x-1)) when '11';
+with ends select result <= temp(x-1) when "00",
+						        '0' when "01",
+								'1' when "10",
+						not(temp(x-1)) when "11";
 
 end arch;
