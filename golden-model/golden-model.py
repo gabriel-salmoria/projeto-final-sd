@@ -6,16 +6,24 @@ PWD = pathlib.Path(__file__).parent
 ROOT = PWD.parent.absolute()
 
 
-def integer_to_twos_complement(number, num_bits):
+def integer_to_twos_complement(number: str, n_bits: int):
     """
     Converts an integer to its Two's Complement representation.
     """
     if number >= 0:
-        return format(number, f"0{num_bits}b")
+        binary = bin(number)[2:].zfill(n_bits)
+        return binary
     else:
-        # Calculate Two's Complement for negative numbers
-        complement = (1 << num_bits) + number
-        return format(complement, f"0{num_bits}b")
+        valor_absoluto = abs(number)
+        binary = bin(valor_absoluto)[2:].zfill(n_bits)
+        
+        # Inversão dos bits
+        complement = ''.join('1' if bit == '0' else '0' for bit in binary)
+        
+        # Adicionar 1 ao complemento de dois
+        decimal_complement = int(complement, 2) + 1
+        binary_complement = bin(decimal_complement)[2:].zfill(n_bits)
+        return binary_complement
 
 
 def generate_golden_model_addsub():
@@ -85,7 +93,7 @@ def generate_golden_model_slt():
 
     São 50 blocos de estímulos, cada um consistindo de uma linha com 2 números
     binários de 32 bits cada, separados por espaço, e uma linha com o resultado
-    da comparação (0: a < b; 1: a >= b), de 1 bit.
+    da comparação (1: a < b; 0: a >= b), de 1 bit.
     """
     path = ROOT / "estimulos-slt.dat"
     n = 32
@@ -99,9 +107,9 @@ def generate_golden_model_slt():
             bin_b = integer_to_twos_complement(b, n)
 
             if a < b:
-                bin_c = "0"
-            else:
                 bin_c = "1"
+            else:
+                bin_c = "0"
 
             file.write(f"{bin_a} {bin_b}\n")
             file.write(f"{bin_c}\n")
