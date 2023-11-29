@@ -22,7 +22,7 @@ def generate_golden_model_addsub():
     """
     Gera os estímulos para o módulo addsub.
 
-    São 100 blocos de estímulos, cada um consistindo de uma linha com 2 números
+    São 300 blocos de estímulos, cada um consistindo de uma linha com 2 números
     binários de 32 bits cada e um binário de 1 bit indicando a operação
     (0: soma; 0: subtração), todos separados por espaço, e uma linha com o
     resultado da soma/subtração, de 32 bits.
@@ -33,7 +33,7 @@ def generate_golden_model_addsub():
     n = 32
 
     with path.open("w") as file:
-        for _ in range(100):
+        for _ in range(300):
             a = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
             b = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
             op = random.randint(0, 1)
@@ -56,7 +56,7 @@ def generate_golden_model_mul():
     """
     Gera os estímulos para o módulo mul.
 
-    São 50 blocos de estímulos, cada um consistindo de uma linha com 2 números
+    São 300 blocos de estímulos, cada um consistindo de uma linha com 2 números
     binários de 32 bits cada, separados por espaço, e uma linha com o resultado
     da nultiplicação dos dois, de 64 bits.
     """
@@ -64,7 +64,7 @@ def generate_golden_model_mul():
     n = 32
 
     with path.open("w") as file:
-        for _ in range(50):
+        for _ in range(300):
             a = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
             b = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
 
@@ -83,7 +83,7 @@ def generate_golden_model_slt():
     """
     Gera os estímulos para o módulo slt.
 
-    São 50 blocos de estímulos, cada um consistindo de uma linha com 2 números
+    São 300 blocos de estímulos, cada um consistindo de uma linha com 2 números
     binários de 32 bits cada, separados por espaço, e uma linha com o resultado
     da comparação (0: a < b; 1: a >= b), de 1 bit.
     """
@@ -91,7 +91,7 @@ def generate_golden_model_slt():
     n = 32
 
     with path.open("w") as file:
-        for _ in range(50):
+        for _ in range(300):
             a = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
             b = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
 
@@ -99,9 +99,9 @@ def generate_golden_model_slt():
             bin_b = integer_to_twos_complement(b, n)
 
             if a < b:
-                bin_c = "0"
-            else:
                 bin_c = "1"
+            else:
+                bin_c = "0"
 
             file.write(f"{bin_a} {bin_b}\n")
             file.write(f"{bin_c}\n")
@@ -113,7 +113,7 @@ def generate_golden_model_and_or():
     """
     Gera os estímulos para o módulo and_or.
 
-    São 100 blocos de estímulos, cada um consistindo de uma linha com 2 números
+    São 300 blocos de estímulos, cada um consistindo de uma linha com 2 números
     binários de 32 bits cadao e um binário de 1 bit indicando a operação
     (0: and; 0: or), todos separados por espaço, e uma linha com o
     resultado do and/or bit a bit, de 32 bits.
@@ -124,7 +124,7 @@ def generate_golden_model_and_or():
     n = 32
 
     with path.open("w") as file:
-        for _ in range(100):
+        for _ in range(300):
             a = random.randint(0, 2**n - 1)
             b = random.randint(0, 2**n - 1)
             op = random.randint(0, 1)
