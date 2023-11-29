@@ -41,7 +41,7 @@ architecture circuito of testbench_addsub is
 			);
 		
 		stim: PROCESS IS
-			file goldenmodel   : text OPEN read_mode IS "/home/joao/projeto-final-sd/estimulos-addsub.dat";
+			file goldenmodel   : text OPEN read_mode IS "estimulos-addsub.dat";
 			variable curr_line : line;
 			variable space     : character;
 			variable A_value   : bit_vector(N-1 DOWNTO 0);

@@ -38,7 +38,7 @@ architecture circuito of testbench_slt is
 			);
 		
 		stim: PROCESS IS
-			file goldenmodel      : text OPEN read_mode IS "\Users\gabri\Documents\projeto-final-sd\estimulos-slt.dat";
+			file goldenmodel      : text OPEN read_mode IS "estimulos-slt.dat";
 			variable curr_line    : line;
 			variable space        : character;
 			variable A_value      : bit_vector(N-1 DOWNTO 0);
