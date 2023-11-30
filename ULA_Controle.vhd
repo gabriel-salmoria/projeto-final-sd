@@ -41,6 +41,10 @@ begin
 		 when "101010" =>
 			-- Operação SLT
 			selector <= "111";
+			
+		 when "111111" =>
+			-- Operação SLT
+			selector <= "011";
 			  
 		 when others =>
 			selector <= "100";

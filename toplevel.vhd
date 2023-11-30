@@ -7,7 +7,7 @@ entity toplevel is
   Port ( A: in STD_LOGIC_VECTOR(31 downto 0);
          B: in STD_LOGIC_VECTOR(31 downto 0);
 			fnct: in std_logic_vector(5 downto 0); 
-         S: out STD_LOGIC_VECTOR(31 downto 0)
+         S: out STD_LOGIC_VECTOR(64 downto 0)
   );
 end toplevel;
 
@@ -20,7 +20,7 @@ architecture main of toplevel is
       Port (inA: in STD_LOGIC_VECTOR(31 downto 0);
 				InB: in STD_LOGIC_VECTOR(31 downto 0);
 			   seletor: in std_logic_vector(2 downto 0);
-				OutS: out STD_LOGIC_VECTOR(31 downto 0)
+				OutS: out STD_LOGIC_VECTOR(64 downto 0)
             );
     end component;
     
