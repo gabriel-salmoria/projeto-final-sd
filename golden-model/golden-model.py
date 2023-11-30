@@ -162,7 +162,14 @@ def generate_golden_model_toplevel():
             a = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
             b = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
             funct = random.choice(
-                ["000", "001", "010", "110", "111", "110"]  # 110 = mul (dummy value)
+                [
+                    "100000",  # add
+                    "100010",  # sub
+                    "100100",  # and
+                    "100101",  # or
+                    "101010",  # slt
+                    "111111",  # mul (dummy value)
+                ]
             )
 
             bin_a = integer_to_twos_complement(a, n)
