@@ -133,14 +133,65 @@ def generate_golden_model_and_or():
             bin_b = integer_to_twos_complement(b, n)
 
             if op:  # or
-                bin_c = ''.join(str(int(bin_a[i]) | int(bin_b[i])) for i in range(n))
+                bin_c = "".join(str(int(bin_a[i]) | int(bin_b[i])) for i in range(n))
             else:  # and
-                bin_c = ''.join(str(int(bin_a[i]) & int(bin_b[i])) for i in range(n))
+                bin_c = "".join(str(int(bin_a[i]) & int(bin_b[i])) for i in range(n))
 
             file.write(f"{bin_a} {bin_b} {op}\n")
             file.write(f"{bin_c}\n")
 
     print("Geração do arquivo de estímulos para o módulo and_or concluída.")
+
+
+def generate_golden_model_toplevel():
+    """
+    Gera os estímulos para o módulo toplevel.
+    Interface:
+    - Entradas:
+        - A: 32 bits
+        - B: 32 bits
+        - funct: 6 bits
+    - Saídas:
+        - S: 32 bits
+    """
+    path = ROOT / "estimulos-toplevel.dat"
+    n = 32
+
+    with path.open("w") as file:
+        for _ in range(300):
+            a = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
+            b = random.randint(-(2 ** (n - 1)), 2 ** (n - 1) - 1)
+            funct = random.choice(
+                ["000", "001", "010", "110", "111", "110"]  # 110 = mul (dummy value)
+            )
+
+            bin_a = integer_to_twos_complement(a, n)
+            bin_b = integer_to_twos_complement(b, n)
+
+            bin_sum = integer_to_twos_complement(a + b, n)[-n:]  # truncate to n bits
+            bin_sub = integer_to_twos_complement(a - b, n)
+            bin_mul = integer_to_twos_complement(a * b, 2 * n + 1)
+            bin_slt = "0" * 31 + "1" if a < b else "0"
+            bin_and = "".join(str(int(bin_a[i]) & int(bin_b[i])) for i in range(n))
+            bin_or = "".join(str(int(bin_a[i]) | int(bin_b[i])) for i in range(n))
+
+            if funct == "100000":
+                final = bin_sum
+            elif funct == "100010":
+                final = bin_sub
+            elif funct == "100100":
+                final = bin_and
+            elif funct == "100101":
+                final = bin_or
+            elif funct == "101010":
+                final = bin_slt
+            else:
+                final = bin_mul
+
+            file.write(f"{bin_a} {bin_b} {funct}\n")
+            file.write(f"{final}\n")
+
+    print("Geração do arquivo de estímulos para o módulo toplevel concluída.")
 
 
 def generate_all():
@@ -151,6 +202,7 @@ def generate_all():
     generate_golden_model_mul()
     generate_golden_model_slt()
     generate_golden_model_and_or()
+    generate_golden_model_toplevel()
 
 
 def clean():
@@ -159,6 +211,8 @@ def clean():
     """
     for path in ROOT.glob("estimulos-*.dat"):
         path.unlink()
+
+    print("Arquivos de estímulos removidos.")
 
 
 def print_help_and_exit(options: list[str]):
@@ -174,6 +228,7 @@ if __name__ == "__main__":
         "mul": generate_golden_model_mul,
         "slt": generate_golden_model_slt,
         "and_or": generate_golden_model_and_or,
+        "toplevel": generate_golden_model_toplevel,
         "all": generate_all,
         "clean": clean,
     }
