@@ -83,7 +83,7 @@ begin
     
     -- mux para pegar a saida S
 	 saida_ula_ext <= "000000000000000000000000000000000" & saidaula;
-	 
+	 entradamuxfinal <= "0000000000000000000000000000000" & saida_slt;
     mux2x1_iii: mux_2x1 generic map(32) port map(saidamuxi, entradamuxfinal, comparacao , saidaula);
     
     mux2x1_iv: mux_2x1 generic map(65) port map(saida_ula_ext, saida_mult, ultimo_mux, saida_final);
