@@ -14,7 +14,7 @@ end ULA_BO;
 architecture datapath of ULA_BO is
 
     signal saidamuxi, entradamuxfinal, saidaaddsub, saidaandor: std_logic_vector(31 downto 0);
-    signal saidaula, saidamult, saidaS: std_logic_vector (64 downto 0);
+    signal saidaula, saidamult, saidaS, saidamuxi65: std_logic_vector (64 downto 0);
     signal comparacao: std_logic;
 
     component multiplicador
@@ -73,7 +73,7 @@ begin
         end if;
     end process;
     
-    
+    saidamuxi65 <= "000000000000000000000000000000000" & saidamuxi;
     
     somasubtrat: addsub generic map(32) port map(inA, inB, seletor(2), saidaaddsub);
     
@@ -93,9 +93,10 @@ begin
     
     -- mux para pegar a saida S
     
-    mux2x1_iii: mux_2x1 generic map(32) port map(saidamuxi, entradamuxfinal, comparacao , saidaULA);
+    mux2x1_iii: mux_2x1 generic map(65) port map(saidamuxi, entradamuxfinal, comparacao , saidaULA);
     
     
-    entradamuxfinal <= "0000000000000000000000000000000" & saidaaddsub(31);
+    entradamuxfinal <= "0000000000000000000000000000000000000000000000000000000000000000" & saidaaddsub(31);
     
 end datapath;
+
