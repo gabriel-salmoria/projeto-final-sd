@@ -22,7 +22,7 @@ architecture circuito of testbench_toplevel is
 	SIGNAL funct : std_logic_vector(5 downto 0); 
 	SIGNAL S     : std_logic_vector(64 DOWNTO 0);
 		
-	CONSTANT wait_time : TIME := 10 ns;
+	CONSTANT wait_time : TIME := 35 ns;
 	BEGIN
 		DUT: toplevel
 			PORT MAP (

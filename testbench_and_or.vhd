@@ -21,7 +21,7 @@ architecture circuito of testbench_and_or is
 	END component;
 	
 	CONSTANT N : integer := 32;
-	CONSTANT wait_time : TIME := 10 ns;
+	CONSTANT wait_time : TIME := 35 ns;
 	
 	SIGNAL A      : std_logic_vector(N-1 DOWNTO 0);
 	SIGNAL B      : std_logic_vector(N-1 DOWNTO 0);

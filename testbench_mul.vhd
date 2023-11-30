@@ -20,7 +20,7 @@ architecture circuito of testbench_mul is
 	SIGNAL B     : std_logic_vector(31 DOWNTO 0);
 	SIGNAL saida : std_logic_vector(64 DOWNTO 0);
 		
-	CONSTANT wait_time : TIME := 10 ns;
+	CONSTANT wait_time : TIME := 35 ns;
 	BEGIN
 		DUT: multiplicador
 			PORT MAP (
