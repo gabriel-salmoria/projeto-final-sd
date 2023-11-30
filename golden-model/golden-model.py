@@ -195,6 +195,9 @@ def generate_golden_model_toplevel():
             else:
                 final = bin_mul
 
+            if len(final) < 65:
+                final = (65-len(final)) * "0" + final
+
             file.write(f"{bin_a} {bin_b} {funct}\n")
             file.write(f"{final}\n")
 
