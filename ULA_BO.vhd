@@ -6,23 +6,17 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity ULA_BO is
   Port ( inA: in STD_LOGIC_VECTOR(31 downto 0);
          InB: in STD_LOGIC_VECTOR(31 downto 0);
-         OutS: in STD_LOGIC_VECTOR(64 downto 0);
-         seletor: std_logic_vector(2 downto 0)
-  );
+			seletor: in std_logic_vector(2 downto 0);
+         OutS: out STD_LOGIC_VECTOR(31 downto 0)
+         );
+			
 end ULA_BO;
 
 architecture datapath of ULA_BO is
 
     signal saidamuxi, entradamuxfinal, saidaaddsub, saidaandor: std_logic_vector(31 downto 0);
-    signal saidaula, saidamult: std_logic_vector (64 downto 0);
+    signal saidaula, saidamult: std_logic_vector (31 downto 0);
     signal comparacao: std_logic;
-
-    component multiplicador
-    	port (A: IN std_logic_vector(31 DOWNTO 0);
-		B: IN std_logic_vector(31 DOWNTO 0);
-		saida : OUT std_logic_vector(64 downto 0)
-		);
-    end component;
     
     
     component and_or
@@ -60,40 +54,26 @@ architecture datapath of ULA_BO is
     end component;
     
 begin
-    process (seletor)
-    
-    begin
-        if seletor = "111" then
-        
-        comparacao <= '1';
-        
-    else
-        comparacao <= '0';
-        
-        end if;
-    end process;
-    
+		
+	with seletor select comparacao <= '1' when "111",
+											    '0' when others;
     
     
     somasubtrat: addsub generic map(32) port map(inA, inB, seletor(2), saidaaddsub);
     
     blocoand_or: and_or generic map(32) port map(inA, inB, seletor(0), saidaandor);
     
-    bloco_multiplicacao: multiplicador port map(inA, inB, saidamult);
-    
     --mux para escolher entre and/or e soma/sub
     
     mux2x1_i: mux_2x1 generic map(32) port map (saidaandor, saidaaddsub, seletor(1), saidamuxi);
-    
-    --mux para escolher entre multiplicação e and/or
-    
-    mux2x1_ii: mux_2x1 generic map(32) port map (saidaandor, saidamult, seletor(1), saidamuxi);
-    
+   
     
     -- mux para pegar a saida S
     
     mux2x1_iii: mux_2x1 generic map(32) port map(saidamuxi, entradamuxfinal, comparacao , saidaula);
     
     entradamuxfinal <= "0000000000000000000000000000000" & saidaaddsub(31);
-    
+
+outS <= saidaula;
+
 end datapath;
